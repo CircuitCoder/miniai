@@ -116,6 +116,11 @@ export default {
               type: 'turn',
               args: tokens[1],
             };
+          } else if(tokens[0] === 'LOOP') {
+            if(tokens.length > 1)
+              return { err: 'LOOP 语句不需要参数' };
+            this.ptr = 0;
+            return { type: 'loop' };
           } else if(tokens[0] === 'IF') {
             let positive;
             let target;

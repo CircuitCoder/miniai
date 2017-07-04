@@ -5,7 +5,7 @@
       <div id="level-indicator" v-if="level >= 0">
         第 {{ level + 1 }} 关 <span class="title">{{ levelName }}</span>
         <div id="toolbelt">
-          <img src="./assets/help.svg"></img>
+          <img src="./assets/help.svg" @click="help = true"></img>
           <img src="./assets/play.svg" @click="run" v-if="!running"></img>
           <img src="./assets/stop.svg" @click="stop" v-if="running">
         </div>
@@ -20,10 +20,26 @@
     <transition name="opacity">
       <div class="overlay" v-if="winning">
         <div class="overlay-inner">
-          <div class="winning-title">恭喜！</div>
-          <div class="winning-hint">
+          <div class="dialog-title">恭喜！</div>
+          <div class="dialog-hint">
             朋友，你帮助 wys 逃离了复杂险恶的实验楼！这给清华附中高等研究实验室带来了新生，带来了质的飞跃，带来了明天的曙光！<br>
             请<strong>刷新</strong>以把 wys 放回实验楼中，重新开始。
+          </div>
+        </div>
+      </div>
+    </transition>
+
+    <transition name="opacity">
+      <div class="overlay" v-if="help" @click="help = false">
+        <div class="overlay-inner">
+          <div class="dialog-title">参考</div>
+          <div class="dialog-hint">
+            <div class="ref">WALK 步数: 前进
+              TURN right/left: 转向
+              ATTACK: 攻击
+              IF [NOT] FACING air/wall/exit/dragon: 条件
+              END: 条件块结束
+              LOOP: 返回指令开始</div>
           </div>
         </div>
       </div>
@@ -53,6 +69,7 @@ export default {
       intervalId: -1,
       runner: null,
       winning: false,
+      help: false,
     }
   },
 
@@ -203,7 +220,7 @@ export default {
   transition: opacity .2s ease-out, backdrop-filter .2s ease-out;
 }
 
-.opacity-enter, .fade-leave-to {
+.opacity-enter, .opacity-leave-to {
   opacity: 0;
 }
 
@@ -229,9 +246,13 @@ export default {
   box-shadow: rgba(0,0,0,.12) 0 4px 6px;
 }
 
-.winning-title {
+.dialog-title {
   font-size: 24px;
   line-height: 36px;
   margin-bottom: 10px;
+}
+
+.ref {
+  white-space: pre-line;
 }
 </style>
