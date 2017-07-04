@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import MONARCH_DEF from '../monarch.config.js';
+
 export default {
   name: 'editor',
   data() {
@@ -16,8 +18,63 @@ export default {
     const require = window.require;
     require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.8.3/min/vs' }});
     require(['vs/editor/editor.main'], () => {
+      window.monaco.languages.setMonarchTokensProvider('miniai', MONARCH_DEF);
+      window.monaco.languages.register({
+        id: 'miniai',
+      });
+      window.monaco.languages.registerCompletionItemProvider('miniai', {
+        provideCompletionItems() {
+          return [
+            {
+              type: 13,
+              label: 'WALK',
+            }, {
+              type: 13,
+              label: 'ATTACK',
+            }, {
+              type: 13,
+              label: 'TURN',
+            }, {
+              type: 13,
+              label: 'IF',
+            }, {
+              type: 13,
+              label: 'END',
+            }, {
+              type: 13,
+              label: 'LOOP',
+            }, {
+              type: 0,
+              label: 'NOT',
+            }, {
+              type: 0,
+              label: 'FACING',
+            }, {
+              type: 11,
+              label: 'right',
+            }, {
+              type: 11,
+              label: 'left',
+            }, {
+              type: 11,
+              label: 'wall',
+            }, {
+              type: 11,
+              label: 'air',
+            }, {
+              type: 11,
+              label: 'exit',
+            }, {
+              type: 11,
+              label: 'dragon',
+            }
+          ];
+        }
+      });
+      console.log(MONARCH_DEF);
       this.editor = window.monaco.editor.create(this.$refs.editor, {
         glyphMargin: true,
+        language: 'miniai',
       });
       this.$emit('ready');
     });
