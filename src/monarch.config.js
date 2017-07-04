@@ -6,6 +6,8 @@ export default {
     'TURN',
     'ATTACK',
     'IF',
+    'END',
+    'LOOP',
   ],
 
   operators: [
