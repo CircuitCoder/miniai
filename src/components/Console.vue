@@ -1,8 +1,8 @@
 <template>
-  <div id="console">
+  <div id="console" ref="console">
     <div v-for="msg of msgs" class="msg" :class="{ alert: msg.type === 'alert' }">
       <div class="time">{{ msg.time + ' >' }}</div>
-      {{ msg.content }}
+      <div class="content">{{ msg.content }}</div>
     </div>
   </div>
 </template>
@@ -23,6 +23,8 @@ export default {
         type: 'alert',
         content: msg,
       });
+
+      this.$nextTick(() => this.pullToEnd());
     },
 
     info(msg) {
@@ -31,7 +33,13 @@ export default {
         type: 'info',
         content: msg,
       });
-    }
+
+      this.$nextTick(() => this.pullToEnd());
+    },
+
+    pullToEnd() {
+      this.$refs.console.scrollTop = this.$refs.console.scrollHeight;
+    },
   }
 }
 </script>
@@ -39,7 +47,7 @@ export default {
 <style>
 #console {
   padding: 20px;
-  border-top: rgba(0,0,0,.3) 1px solid;
+  border-top: rgba(0,0,0,.12) 1px solid;
 
   overflow-x: hidden;
   overflow-y: scroll;
@@ -50,10 +58,15 @@ export default {
   font-size: 14px;
 
   color: rgba(0,0,0,.7);
+
+  margin-bottom: 20px;
+}
+
+.msg .content {
+  white-space: pre-line;
 }
 
 .msg.alert {
-  background: #FF4C4C;
   color: #7F0000;
 }
 
