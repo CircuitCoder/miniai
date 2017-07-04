@@ -76,8 +76,8 @@ export default {
       this.map.forEach((r, i) =>
         r.forEach((s, j) => {
           if(s === '^') {
-            this.x = i;
-            this.y = j;
+            this.x = j;
+            this.y = i;
           }
         }));
 
